@@ -135,17 +135,17 @@ For more information about status notification, please read [http://docs.africas
 
 - `createCheckoutToken(phoneNumber: String)`: Create a checkout token.
 
-### `SMS` **TODO**
+### `SMS` 
 
-- `send(message: String, recipients: [String])`: Send a message
+- `send(message: String, to: [String], from: String?)`: Send a message
 
-- `sendBulk(message: String, recipients: [String])`: Send a message in bulk
+- `sendBulk(message: String, to: [String], from: String?)`: Send a message in bulk
 
-- `sendPremium(message: String, keyword: String, linkId: String, recipients: [String])`: Send a premium SMS
+- `sendPremium(message: String, keyword: String, linkId: String, to: [String], from: String?)`: Send a premium SMS
 
-- `fetchMessage()`: Fetch your messages
+- `fetchMessages(lastReceivedId: Int?)`: Fetch your messages
 
-- `fetchSubscription(shortCode: String, keyword: String)`: Fetch your premium subscription data
+- `fetchSubscriptions(lastReceivedId:Int?, shortCode: String, keyword: String)`: Fetch your premium subscription data
 
 - `createSubscription(shortCode: String, keyword: String, phoneNumber: String)`: Create a premium subscription
 

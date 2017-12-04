@@ -85,6 +85,7 @@ public struct AfricasTalking {
     private static var airtimeService: AirtimeService? = nil
     private static var voiceService: VoiceService? = nil
     private static var tokenService: TokenService? = nil
+    private static var smsService: SmsService? = nil
     
     private init() { }
     
@@ -125,5 +126,12 @@ public struct AfricasTalking {
             voiceService = VoiceService()
         }
         return voiceService!
+    }
+    
+    static func getSmsService() -> SmsService {
+        if (smsService == nil) {
+            smsService = SmsService()
+        }
+        return smsService!
     }
 }
