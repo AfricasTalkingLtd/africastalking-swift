@@ -176,11 +176,11 @@ For more information on:
 ### Voice
 
 
-- `makeCall(phoneNumber: String)`:
+- `makeCall(from: String, to: [String])`: Initiate an outbound call `from` your virtual number `to` some number(s)
 
-- `queueStatus(phoneNumbers: String)`:
+- `queueStatus(phoneNumbers: String)`: Query call queue status
 
-- `mediaUpload(url: Screen)`:
+- `mediaUpload(url: String, phoneNumber: String)`: Upload media file
 
 
 

@@ -83,6 +83,7 @@ public struct AfricasTalking {
     
     private static var accountService: AccountService? = nil
     private static var airtimeService: AirtimeService? = nil
+    private static var voiceService: VoiceService? = nil
     private static var tokenService: TokenService? = nil
     
     private init() { }
@@ -117,5 +118,12 @@ public struct AfricasTalking {
             tokenService = TokenService()
         }
         return tokenService!
+    }
+    
+    static func getVoiceService() -> VoiceService {
+        if (voiceService == nil) {
+            voiceService = VoiceService()
+        }
+        return voiceService!
     }
 }
