@@ -1,23 +1,27 @@
 //
-//  AccountService.swift
-//  AfricasTalkingPackageDescription
+//  TokenService.swift
+//  AfricasTalking
 //
-//  Created by Salama Balekage on 01/12/2017.
+//  Created by Salama Balekage on 04/12/2017.
 //
+
 import Alamofire
 import SwiftyJSON
 
-public class AccountService: Service {
+
+public class TokenService: Service {
     
     internal override init() {
         super.init()
-        baseUrl = "https://api.\(isSandbox ? Service.SANDBOX_DOMAIN : Service.PRODUCTION_DOMAIN)/version1"
+        baseUrl = "https://api.\(isSandbox ? Service.SANDBOX_DOMAIN : Service.PRODUCTION_DOMAIN)"
     }
     
-    func getUserData(callback: @escaping AfricasTalking.Callback) {
-        let url = "\(baseUrl!)/user"
-        let params: Parameters = ["username": Service.USERNAME!]
-        Alamofire.request(url, method: .get, parameters: params, headers: headers)
+    public func createCheckoutToken(phoneNumber: String, callback: @escaping AfricasTalking.Callback) {
+        let url = "\(baseUrl!)/checkout/token/create"
+        let params: Parameters = [
+            "phoneNumber": phoneNumber
+        ]
+        Alamofire.request(url, method: .post, parameters: params)
             .validate()
             .responseString { resp in
                 switch(resp.result) {

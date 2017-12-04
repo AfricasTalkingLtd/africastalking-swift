@@ -1,17 +1,17 @@
 //
-//  AccountServiceTests.swift
+//  TokenServiceTests.swift
 //  AfricasTalking
 //
-//  Created by Salama Balekage on 01/12/2017.
+//  Created by Salama Balekage on 04/12/2017.
 //
 
 import XCTest
 @testable import AfricasTalking
 
-class AccountServiceTests: XCTestCase {
+class TokenServiceTests: XCTestCase {
     
-    lazy var accountService: AccountService = {
-        return AfricasTalking.getAccountService()
+    lazy var service: TokenService = {
+        return AfricasTalking.getTokenService()
     }()
     
     override func setUp() {
@@ -23,15 +23,16 @@ class AccountServiceTests: XCTestCase {
         super.tearDown()
     }
     
-    func testGetUserData() {
+    func testCreateCheckoutToken() {
         
-        let expectation = XCTestExpectation(description: "Gets user balance")
+        let expectation = XCTestExpectation(description: "Creates checkout token")
         
-        accountService.getUserData { error, data in
+        service.createCheckoutToken(phoneNumber: "0718769882") { error, data in
             XCTAssertNil(error)
             XCTAssertNotNil(data)
             if (data != nil) {
-                XCTAssertEqual(data!["UserData"]["balance"].stringValue.starts(with: "KES"), true)
+                XCTAssertNotNil(data!["token"])
+                XCTAssertEqual(data!["description"], "Success")
             }
             expectation.fulfill()
         }
@@ -40,7 +41,6 @@ class AccountServiceTests: XCTestCase {
     }
     
     static var allTests = [
-        ("testGetUserData", testGetUserData),
+        ("testCreateCheckoutToken", testCreateCheckoutToken),
     ]
 }
-

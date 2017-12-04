@@ -1,5 +1,6 @@
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 extension Date {
     var millisecondsSince1970:Int64 {
@@ -78,11 +79,13 @@ open class Service {
 
 public struct AfricasTalking {
     
-    private static var accountService: AccountService? = nil
+    public typealias Callback = (_ error: String?, _ data: JSON?) -> Void
     
-    private init() {
-        
-    }
+    private static var accountService: AccountService? = nil
+    private static var airtimeService: AirtimeService? = nil
+    private static var tokenService: TokenService? = nil
+    
+    private init() { }
     
     static func initialize(username: String, apiKey: String) {
         Service.USERNAME = username
@@ -100,5 +103,19 @@ public struct AfricasTalking {
             accountService = AccountService()
         }
         return accountService!
+    }
+    
+    static func getAirtimeService() -> AirtimeService {
+        if (airtimeService == nil) {
+            airtimeService = AirtimeService()
+        }
+        return airtimeService!
+    }
+    
+    static func getTokenService() -> TokenService {
+        if (tokenService == nil) {
+            tokenService = TokenService()
+        }
+        return tokenService!
     }
 }
