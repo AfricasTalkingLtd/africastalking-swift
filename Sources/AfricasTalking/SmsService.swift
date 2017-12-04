@@ -74,19 +74,19 @@ public class SmsService: Service {
         }
     }
     
-    func send(message: String, to:[String], from: String? = nil, callback: @escaping AfricasTalking.Callback) {
+    public func send(message: String, to:[String], from: String? = nil, callback: @escaping AfricasTalking.Callback) {
         return self._send(message: message, to: to, from: from, bulkSMSMode:nil, enqueue:nil, keyword:nil, linkId:nil, retryDurationInHours:nil, callback: callback)
     }
     
-    func sendBulk(message: String, to:[String], from: String? = nil, callback: @escaping AfricasTalking.Callback) {
+    public func sendBulk(message: String, to:[String], from: String? = nil, callback: @escaping AfricasTalking.Callback) {
         return self._send(message: message, to: to, from: from, bulkSMSMode: true, enqueue:nil, keyword:nil, linkId:nil, retryDurationInHours:nil, callback: callback)
     }
     
-    func sendPremium(message: String, keyword: String, linkId: String, to:[String], from: String?, callback: @escaping AfricasTalking.Callback) {
+    public func sendPremium(message: String, keyword: String, linkId: String, to:[String], from: String?, callback: @escaping AfricasTalking.Callback) {
         return self._send(message: message, to: to, from: from, bulkSMSMode: false, enqueue:nil, keyword: keyword, linkId: linkId, retryDurationInHours:nil, callback: callback)
     }
     
-    func fetchMessages(lastReceivedId: Int? = 0, callback: @escaping AfricasTalking.Callback) {
+    public func fetchMessages(lastReceivedId: Int? = 0, callback: @escaping AfricasTalking.Callback) {
         let url = "\(baseUrl!)/messaging"
         var params: Parameters = [
             "username": Service.USERNAME!,
@@ -113,7 +113,7 @@ public class SmsService: Service {
         }
     }
     
-    func fetchSubscriptions(lastReceivedId: Int? = 0, shortCode: String, keyword: String, callback: @escaping AfricasTalking.Callback) {
+    public func fetchSubscriptions(lastReceivedId: Int? = 0, shortCode: String, keyword: String, callback: @escaping AfricasTalking.Callback) {
         let url = "\(baseUrl!)/subscription"
         var params: Parameters = [
             "username": Service.USERNAME!,
@@ -143,7 +143,7 @@ public class SmsService: Service {
         }
     }
     
-    func createSubscription(shortCode: String, keyword: String, phoneNumber: String, callback: @escaping AfricasTalking.Callback) {
+    public func createSubscription(shortCode: String, keyword: String, phoneNumber: String, callback: @escaping AfricasTalking.Callback) {
         
         // Get checkout token first
         let tokenService = AfricasTalking.getTokenService()

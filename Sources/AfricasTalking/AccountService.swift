@@ -14,7 +14,7 @@ public class AccountService: Service {
         baseUrl = "https://api.\(isSandbox ? Service.SANDBOX_DOMAIN : Service.PRODUCTION_DOMAIN)/version1"
     }
     
-    func getUserData(callback: @escaping AfricasTalking.Callback) {
+    public func getUserData(callback: @escaping AfricasTalking.Callback) {
         let url = "\(baseUrl!)/user"
         let params: Parameters = ["username": Service.USERNAME!]
         Alamofire.request(url, method: .get, parameters: params, headers: headers)

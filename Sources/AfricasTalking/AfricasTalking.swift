@@ -89,46 +89,46 @@ public struct AfricasTalking {
     
     private init() { }
     
-    static func initialize(username: String, apiKey: String) {
+    public static func initialize(username: String, apiKey: String) {
         Service.USERNAME = username
         Service.API_KEY = apiKey
     }
     
-    static func initialize(withHost host: String, andPort port: Int = 35897, butWithoutTls disableTls: Bool = false) {
+    public static func initialize(withHost host: String, andPort port: Int = 35897, butWithoutTls disableTls: Bool = false) {
         Service.HOST = host
         Service.PORT = port
         Service.DISABLE_TLS = disableTls
     }
  
-    static func getAccountService() -> AccountService {
+    public static func getAccountService() -> AccountService {
         if (accountService == nil) {
             accountService = AccountService()
         }
         return accountService!
     }
     
-    static func getAirtimeService() -> AirtimeService {
+    public static func getAirtimeService() -> AirtimeService {
         if (airtimeService == nil) {
             airtimeService = AirtimeService()
         }
         return airtimeService!
     }
     
-    static func getTokenService() -> TokenService {
+    public static func getTokenService() -> TokenService {
         if (tokenService == nil) {
             tokenService = TokenService()
         }
         return tokenService!
     }
     
-    static func getVoiceService() -> VoiceService {
+    public static func getVoiceService() -> VoiceService {
         if (voiceService == nil) {
             voiceService = VoiceService()
         }
         return voiceService!
     }
     
-    static func getSmsService() -> SmsService {
+    public static func getSmsService() -> SmsService {
         if (smsService == nil) {
             smsService = SmsService()
         }
