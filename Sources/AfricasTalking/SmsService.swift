@@ -8,6 +8,6 @@
 public class SmsService: Service {
     
     internal override init() {
-        
+        super.init()
     }
 }

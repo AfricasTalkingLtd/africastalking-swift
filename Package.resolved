@@ -11,12 +11,39 @@
         }
       },
       {
+        "package": "SwiftGRPC",
+        "repositoryURL": "https://github.com/grpc/grpc-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "fd0f5d7cf48143c0ce8cd28068ce14d8e899c1c4",
+          "version": "0.2.3"
+        }
+      },
+      {
+        "package": "SwiftProtobuf",
+        "repositoryURL": "https://github.com/apple/swift-protobuf",
+        "state": {
+          "branch": null,
+          "revision": "6bfdf201bbb2db4e3b556d415b52f08850207ea7",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "SwiftyJSON",
         "repositoryURL": "https://github.com/SwiftyJSON/SwiftyJSON.git",
         "state": {
           "branch": null,
           "revision": "de309166a48a9dfc51d5bc4c55c0664d981de311",
           "version": "4.0.0"
+        }
+      },
+      {
+        "package": "zlib",
+        "repositoryURL": "https://github.com/Zewo/zlib.git",
+        "state": {
+          "branch": null,
+          "revision": "4967a680a4e8cfbf167332dee7f0ec1043fd3b04",
+          "version": "0.4.0"
         }
       }
     ]

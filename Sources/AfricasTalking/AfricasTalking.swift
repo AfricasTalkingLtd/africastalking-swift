@@ -1,4 +1,15 @@
+import Foundation
 import Alamofire
+
+extension Date {
+    var millisecondsSince1970:Int64 {
+        return Int64((self.timeIntervalSince1970 * 1000.0).rounded())
+    }
+    
+    init(milliseconds:Int64) {
+        self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
+    }
+}
 
 open class Service {
     
@@ -11,8 +22,17 @@ open class Service {
     
     internal static var USERNAME: String? = nil
     internal static var API_KEY: String? = nil
+    internal static var AUTH_TOKEN: Africastalking_ClientTokenResponse? = nil
     
-    internal var token: String? = nil
+    internal static let GrpcClient: Africastalking_SdkServerServiceService = {
+        let address = "\(Service.HOST):\(Service.PORT)"
+        if (Service.DISABLE_TLS) {
+            return Africastalking_SdkServerServiceService(address: address)
+        } else {
+            return Africastalking_SdkServerServiceService(address: address, certificates: "", host: Service.HOST) // FIXME
+        }
+    }()
+    
     internal var baseUrl: String? = nil
     
     internal var isSandbox: Bool {
@@ -23,21 +43,37 @@ open class Service {
     
     internal var headers: HTTPHeaders {
         get {
-            let authHeader = token == nil ? "apiKey" : "token"
-            let authValue = token == nil ? Service.API_KEY! : token!
+            let authHeader = Service.API_KEY != nil ? "apiKey" : "authToken"
+            var authValue = Service.API_KEY
+            if (authValue == nil) {
+                if (Service.AUTH_TOKEN == nil || Service.AUTH_TOKEN!.expiration < Date().millisecondsSince1970) {
+                    Service.fetchToken()
+                }
+                authValue = Service.AUTH_TOKEN?.token
+            }
+            
             return [
-                authHeader : authValue,
+                authHeader : authValue ?? "none",
                 "Accept": "application/json"
             ]
         }
     }
     
-    init() { }
-    
-    internal func fetchToken() {
-        // grpc
-        token = "some token"
+    init() {
+        if (Service.API_KEY == nil && Service.AUTH_TOKEN == nil) {
+            // init token
+            Service.fetchToken()
+        }
     }
+    
+    private static func fetchToken() {
+        do {
+            let req = Africastalking_ClientTokenRequest()
+            Service.AUTH_TOKEN = try Service.GrpcClient.gettoken(req)
+            Service.USERNAME = Service.AUTH_TOKEN?.username ?? nil
+        } catch { }
+    }
+    
 }
 
 public struct AfricasTalking {
@@ -53,7 +89,7 @@ public struct AfricasTalking {
         Service.API_KEY = apiKey
     }
     
-    static func initialize(host: String, port: Int = 35897, disableTls: Bool = false) {
+    static func initialize(withHost host: String, andPort port: Int = 35897, butWithoutTls disableTls: Bool = false) {
         Service.HOST = host
         Service.PORT = port
         Service.DISABLE_TLS = disableTls
