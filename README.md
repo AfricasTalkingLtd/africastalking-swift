@@ -11,28 +11,22 @@ For instance, to send an SMS, the client with request a token from the server; T
 
 Your server application could be something like this:
 
-```java
+```Js
 /* On The Server (Java, Node.js, PHP, C/C++, C# and all languages supported by gRPC.) */
 
-import com.africastalking.*;
-
-public class SomeJavaApplication {
-
-    public static void main(String[] args) {
-    
-        // Initialize the SDK
-        AfricasTalking.initialize(USERNAME, API_KEY);
-        
-        // Initialize the server
-        Server server = new Server();
-        
-        // Add SIP credentials (Voice Only)
-        server.addSipCredentials(SIP_USERNAME, SIP_PASSWORD, SIP_HOST);
-        
-        // Start the server
-        server.start();
-    }
-}
+const options = {
+    apiKey: 'YOUR_API_KEY',         // Use sandbox API key for sandbox development
+    username: 'YOUR_USERNAME',      // Use "sandbox" for sandbox development
+};
+const Server = require('africastalking/server');
+const srv = new Server(options);
+srv.start({
+    privateKeyFile: fs.readFileSync('path/to/pk'),
+    certChainFile: fs.readFileSync('path/to/cert/chain'),
+    rootCertFile: fs.readFileSync('path/to/root/cert'),
+    port: 35897,
+    insecure: false,
+});
 ```
 
 And your iOS app:
@@ -56,7 +50,7 @@ airtime.send(to: recipients) {error, data in
 }
 ```
 
-See the [example](./example) for complete sample apps (Android, Web Java+Node)
+See the [example](./example) for complete sample apps (iOS, Node)
 
 ### Download
 
