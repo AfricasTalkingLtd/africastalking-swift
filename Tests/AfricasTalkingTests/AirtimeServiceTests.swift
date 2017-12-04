@@ -28,7 +28,7 @@ class AirtimeServiceTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Sends airtime to one recipient")
         
-        service.send(to: "+254718769882", currencyCode: "KES", amount: Double(arc4random_uniform(51) + 50)) { error, data in
+        service.send(to: "+254718769882", amount: "KES \(Double(arc4random_uniform(51) + 50))") { error, data in
             XCTAssertNil(error)
             XCTAssertNotNil(data)
             if (data != nil) {
@@ -45,10 +45,10 @@ class AirtimeServiceTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Sends airtime to many recipient")
         let recipients = [
-            ["phoneNumber": "254718769882", "currencyCode": "KES", "amount": Double(arc4random_uniform(51) + 50) ],
-            ["phoneNumber": "254718769881", "currencyCode": "KES", "amount": Double(arc4random_uniform(51) + 50) ]
+            ["phoneNumber": "254718769882", "amount": "KES \(Double(arc4random_uniform(51) + 50))" ],
+            ["phoneNumber": "254718769881", "amount": "KES \(Double(arc4random_uniform(51) + 50))"]
         ]
-        service.send(recipients: recipients) { error, data in
+        service.send(to: recipients) { error, data in
             XCTAssertNil(error)
             XCTAssertNotNil(data)
             if (data != nil) {

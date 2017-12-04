@@ -15,29 +15,20 @@ public class AirtimeService: Service {
         baseUrl = "https://api.\(isSandbox ? Service.SANDBOX_DOMAIN : Service.PRODUCTION_DOMAIN)/version1/airtime"
     }
     
-    private func makeJSONRecipients(recipients: [[String: Any?]]) -> String {
-        let formattedRecipients = recipients.map { (val: [String: Any?]) -> [String: Any?] in
-            let currency = val["currencyCode"]
-            let amount = val["amount"]
-            var result: [String: Any?] = ["phoneNumber": val["phoneNumber"] ?? nil ]
-            if (currency != nil) {
-                result["amount"] = "\(currency!!) \(amount!!)"
-            }
-            return result
-        }
-        let json = JSON(formattedRecipients)
+    private func makeJSONRecipients(to: [[String: Any?]]) -> String {
+        let json = JSON(to)
         return json.rawString([.castNilToNSNull: true ])!
     }
     
-    public func send(to: String, currencyCode: String, amount:Double, callback: @escaping AfricasTalking.Callback) {
-        return self.send(recipients: [ [ "phoneNumber": to, "currencyCode": currencyCode, "amount": amount ] ], callback: callback)
+    public func send(to: String, amount: String, callback: @escaping AfricasTalking.Callback) {
+        return self.send(to: [ [ "phoneNumber": to, "amount": amount ] ], callback: callback)
     }
     
-    public func send(recipients: [[String: Any?]], callback: @escaping AfricasTalking.Callback) {
+    public func send(to: [[String: Any?]], callback: @escaping AfricasTalking.Callback) {
         let url = "\(baseUrl!)/send"
         let params: Parameters = [
             "username": Service.USERNAME!,
-            "recipients": makeJSONRecipients(recipients: recipients)
+            "recipients": makeJSONRecipients(to: to)
         ]
         Alamofire.request(url, method: .post, parameters: params, headers: headers)
             .validate()

@@ -41,23 +41,19 @@ And your iOS app:
 /* On The Client (iOS) */
 
 // Init SDK
-AfricasTalking.initialize(SERVER_HOSTNAME);
+AfricasTalking.initialize(SERVER_HOSTNAME)
 
 // Get Service
-AirtimeService airtime = AfricasTalking.getAirtimeService();
+let airtime = AfricasTalking.getAirtimeService()
 
 // Use Service
-airtime.send("+25467675655", "KES", 100, new Callback<AirtimeResponses>() {
-    @Override
-    void onSuccess(AirtimeResponses responses) {
-    //...
-    }
-
-    @Override
-    void onError(Throwable throwable) {
-    //...
-    }
-});
+let recipients = [
+  ["phoneNumber": "+254718769882", "currencyCode": "KES", "amount": 332],
+  ["phoneNumber": "0718769881", "currencyCode": "KES", "amount": 324 ]
+]
+airtime.send(to: recipients) {error, data in
+  //...
+}
 ```
 
 See the [example](./example) for complete sample apps (Android, Web Java+Node)
@@ -99,22 +95,22 @@ Or Maven (from `http://dl.bintray.com/africastalking/java`)
 #### Client (iOS)
 With Swift Package Manager
 
-```groovy
+```swift
 import PackageDescription
 
 let package = Package(
     name: "YourApp"
-    ...
+    //...
     dependencies: [
         .package(url: "https://github.com/AfricastalkingLtd/africastalking-swift.git", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "YourApp",
-            dependencies: ["Africastalking",]
+            dependencies: ["AfricasTalking",]
         )
     ]
-    ...
+    //...
 )
 ```
 
@@ -122,42 +118,42 @@ let package = Package(
 ## Initialization
 The following static methods are available in the `africasTalking` package to initialize the library:
 
-- `initialize(String host, int port, bool disableTLS)`: Initialize the library.
+- `initialize(host: String, port: Int, disableTls: Bool)`: Initialize the library.
 - `getXXXService()`: Get an instance to a given `XXX` service. e.g. `.getSmsService()`, `.getPaymentService()`, etc.
 
 
 ## Services
 
-All methods are synchronous (i.e. will block current thread) but provide asynchronous variants that take a `Callback<T>` as the last argument.
+All methods take a `Africastalking.Callback: (error: String?, data: JSON?) -> Void` as the last parameter.
 
 ### `Account`
 - `getUser()`: Get user information.
 
 ### `Airtime`
 
-- `send(String phone, String currencyCode, float amount)`: Send airtime to a phone number.
+- `send(to: String, amount: String)`: Send airtime to a phone number. Amount with currency code, e.g. `USD 10`
 
-- `send(HashMap<String, String> recipients)`: Send airtime to a bunch of phone numbers. The keys in the `recipients` map are phone numbers while the values are airtime amounts ( e.g. `KES 678`).
+- `send(recipients: [[String: Any]])`: Send airtime to a bunch of phone numbers. The keys in the `recipients` map are phone numbers while the values are airtime amounts ( e.g. `KES 678`).
 
 For more information about status notification, please read [http://docs.africastalking.com/airtime/callback](http://docs.africastalking.com/airtime/callback)
 
 ### `Token`
 
-- `createCheckoutToken(String phoneNumber)`: Create a checkout token.
+- `createCheckoutToken(phoneNumber: String)`: Create a checkout token.
 
-### `SMS`
+### `SMS` **TODO**
 
-- `send(String message, String[] recipients)`: Send a message
+- `send(message: String, recipients: [String])`: Send a message
 
-- `sendBulk(String message, String[] recipients)`: Send a message in bulk
+- `sendBulk(message: String, recipients: [String])`: Send a message in bulk
 
-- `sendPremium(String message, String keyword, String linkId, String[] recipients)`: Send a premium SMS
+- `sendPremium(message: String, keyword: String, linkId: String, recipients: [String])`: Send a premium SMS
 
 - `fetchMessage()`: Fetch your messages
 
-- `fetchSubscription(String shortCode, String keyword)`: Fetch your premium subscription data
+- `fetchSubscription(shortCode: String, keyword: String)`: Fetch your premium subscription data
 
-- `createSubscription(String shortCode, String keyword, String phoneNumber)`: Create a premium subscription
+- `createSubscription(shortCode: String, keyword: String, phoneNumber: String)`: Create a premium subscription
 
 For more information on: 
 
@@ -167,81 +163,27 @@ For more information on:
 
 - How to listen for subscription notifications: [http://docs.africastalking.com/subscriptions/callback](http://docs.africastalking.com/subscriptions/callback)
 
-### `Payment`
+### `Payment` **TODO**
 
-- `checkout(CheckoutRequest request)`: Initiate checkout(mobile, card or bank).
+- `checkout(request: CheckoutRequest)`: Initiate checkout(mobile, card or bank).
 
-- `validateCheckout(CheckoutValidateRequest request)`: Validate checkout (card or bank).
+- `validateCheckout(request: CheckoutValidateRequest)`: Validate checkout (card or bank).
 
-- `payConsumers(String productName, List<Consumer> recipients)`: Send money to consumer. 
+- `payConsumers(productName: String, recipients: [Consumer])`: Send money to consumer. 
 
-- `payBusiness(String productName, Business recipient)`: Send money to business.
+- `payBusiness(productName: String, recipient: Business)`: Send money to business.
 
 ### Voice
 
-Unlike other services, voice is initialized as follows:
 
-```java
-AfricasTalking.initializeVoiceService(Context cxt, RegistrationListener listener, new Callback<VoiceService>() {
-    @Override
-    public void onSuccess(VoiceService service) {
-      // keep a reference to the 'service'
-    }
+- `makeCall(phoneNumber: String)`:
 
-    @Override
-    public void onFailure(Throwable throwable) {
-      // something blew up
-    }
-});
-```
+- `queueStatus(phoneNumbers: String)`:
 
-
-- `registerCallListener(CallListener listener)`:
-
-- `makeCall(String phoneNumber)`:
-
-- `picCall()`:
-
-- `holdCall()`:
-
-- `resumeCall()`:
-
-- `endCall()`:
-
-- `sendDtmf(char character)`:
-
-- `startAudio()`:
-
-- `toggleMute()`:
-
-- `setSpeakerMode(Context context, boolean loudSpeaker)`:
-
-- `isCallInProgress()`:
-
-- `getCallInfo()`
-
-- `queueStatus(String phoneNumbers)`:
-
-- `mediaUpload(String url)`:
+- `mediaUpload(url: Screen)`:
 
 
 
-## Requirements
-
-On Android, This SDK requires **API 16+**. Your app will also need the following permissions:
-
-```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    
-    <!-- The following are required if you want use the voice service -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    
-    <!-- ... -->
-    
-</manifest>
-```
+## Credit  
 
 For more info, please visit [https://www.africastalking.com](https://www.africastalking.com)
