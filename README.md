@@ -11,8 +11,8 @@ For instance, to send an SMS, the client with request a token from the server; T
 
 Your server application could be something like this:
 
-```Js
-/* On The Server (Java, Node.js, PHP, C/C++, C# and all languages supported by gRPC.) */
+```js
+/* On The Server (Node.js, Java, and all languages supported by gRPC.) */
 
 const options = {
     apiKey: 'YOUR_API_KEY',         // Use sandbox API key for sandbox development
