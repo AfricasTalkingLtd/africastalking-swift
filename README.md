@@ -50,8 +50,6 @@ airtime.send(to: recipients) {error, data in
 }
 ```
 
-See the [example](./example) for complete sample apps (iOS, Node)
-
 ### Download
 
 #### Server
