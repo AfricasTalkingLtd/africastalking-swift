@@ -157,15 +157,15 @@ For more information on:
 
 - How to listen for subscription notifications: [http://docs.africastalking.com/subscriptions/callback](http://docs.africastalking.com/subscriptions/callback)
 
-### `Payment` **TODO**
+### `Payment` 
 
 - `checkout(request: CheckoutRequest)`: Initiate checkout(mobile, card or bank).
 
 - `validateCheckout(request: CheckoutValidateRequest)`: Validate checkout (card or bank).
 
-- `payConsumers(productName: String, recipients: [Consumer])`: Send money to consumer. 
+- `mobileB2C(productName: String, recipients: [Consumer])`: Send money to consumer. 
 
-- `payBusiness(productName: String, recipient: Business)`: Send money to business.
+- `mobileB2B(productName: String, recipient: Business)`: Send money to business.
 
 ### Voice
 

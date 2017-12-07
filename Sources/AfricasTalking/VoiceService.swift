@@ -71,12 +71,14 @@ public class VoiceService: Service {
             "url": url,
             "phoneNumber": phoneNumber,
         ]
-        Alamofire.request(url, method: .post, parameters: params, headers: headers)
+        var customHeaders = headers;
+        customHeaders["Accept"] = "text/plain"
+        Alamofire.request(url, method: .post, parameters: params, headers: customHeaders)
             .validate()
             .responseString { resp in
                 switch(resp.result) {
                 case .success:
-                    let data = JSON(parseJSON: resp.result.value!)
+                    let data = JSON(parseJSON: "{\"message\":\"\(resp.result.value!)\"}")
                     callback(nil, data)
                 case .failure:
                     var body: String? = nil
